@@ -222,21 +222,22 @@ void ArUco::drawScene() {
 			// on charge cette matrice pour se placer dans le repere de ce marqueur [m] 
 			glLoadMatrixd(modelview_matrix);
 
-			for (int h = 0; h < 10; h++) {
-				//glClear(GL_COLOR_BUFFER_BIT);
-				
-				
-
 				// On dessine les axes X Y Z
 				drawAxis(m_MarkerSize);
 
 				//On prend le centre
 				Center2 = m_Markers[m].getCenter();
+				Vector Centers = Vector(Center2.x - Center.x, Center2.y - Center.y, 0);
+				Vector XAxis = Vector(1, 0, 0);
+
+				GLfloat cosangle = Centers.Dot(XAxis) / sqrt(Centers.x * Centers.x + Centers.y * Centers.y);
+
+				GLfloat angle = acosf(cosangle) * (180/3.14159);
 
 				//a = 0;
 
 				if (a == 1) {
-					glRotatef(60, 0, 0, 1);
+					glRotatef(angle, 0, 0, 1);
 				}
 
 				// On sauvegarde la matrice courante
@@ -248,7 +249,6 @@ void ArUco::drawScene() {
 				glPopMatrix();
 
 				
-			}
 
 			a = 0;
 		}
